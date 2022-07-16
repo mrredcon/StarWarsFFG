@@ -1,7 +1,7 @@
 {
-  "name": "starwarsffg",
-  "title": "Star Wars FFG",
-  "description": "A system for playing Star Wars FFG games.",
+  "name": "genesys",
+  "title": "Genesys",
+  "description": "A system for playing Genesys games.",
   "version": "1.72",
   "minimumCoreVersion": "0.8.9",
   "compatibleCoreVersion": "9",
