@@ -90,13 +90,13 @@ export default class FlagMigrationHelpers {
     );
   };
 
-  // Copy individual flag into system ('starwarsffg') scope
+  // Copy individual flag into system ('genesys') scope
   static rescopeFlag(doc, flag) {
     if (this.oldFlagScopes.includes(flag)) {
       try {
-        doc.setFlag("starwarsffg", flag, doc.data.flags[flag]);
+        doc.setFlag("genesys", flag, doc.data.flags[flag]);
         console.debug(
-          `Copied flag into starwarsffg scope: ${doc.name}.data.flags.${flag}`
+          `Copied flag into genesys scope: ${doc.name}.data.flags.${flag}`
         );
       } catch (err) {
         console.log(`Flag migration error at document: ${doc.name}`);

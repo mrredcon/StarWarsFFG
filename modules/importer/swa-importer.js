@@ -6,9 +6,9 @@ export default class SWAImporter extends FormApplication {
   static get defaultOptions() {
     return mergeObject(super.defaultOptions, {
       id: "swa-importer",
-      classes: ["starwarsffg", "data-import"],
+      classes: ["genesys", "data-import"],
       title: "Adversaries Importer",
-      template: "systems/starwarsffg/templates/importer/swa-importer.html",
+      template: "systems/genesys/templates/importer/swa-importer.html",
     });
   }
 
@@ -362,17 +362,17 @@ export default class SWAImporter extends FormApplication {
                   },
                 };
 
-                const skilltheme = await game.settings.get("starwarsffg", "skilltheme");
+                const skilltheme = await game.settings.get("genesys", "skilltheme");
 
                 if (skilltheme !== "starwars") {
-                  skills = JSON.parse(JSON.stringify(CONFIG.FFG.alternateskilllists.find((list) => list.id === game.settings.get("starwarsffg", "skilltheme")).skills));
+                  skills = JSON.parse(JSON.stringify(CONFIG.FFG.alternateskilllists.find((list) => list.id === game.settings.get("genesys", "skilltheme")).skills));
                 }
 
                 let adversary = {
                   name: item.name,
                   type: item.type === "Nemesis" ? "character" : "minion",
                   flags: {
-                    starwarsffg: {
+                    genesys: {
                       ffgimportid: `${f.name}-${item.type}-${item.name}`,
                       config: {
                         enableAutoSoakCalculation: false,

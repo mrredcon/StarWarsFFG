@@ -15,7 +15,7 @@ export class ItemSheetFFG extends ItemSheet {
   /** @override */
   static get defaultOptions() {
     return mergeObject(super.defaultOptions, {
-      classes: ["starwarsffg", "sheet", "item"],
+      classes: ["genesys", "sheet", "item"],
       tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "description" }],
       scrollY: [".sheet-body", ".tab"],
     });
@@ -23,7 +23,7 @@ export class ItemSheetFFG extends ItemSheet {
 
   /** @override */
   get template() {
-    const path = "systems/starwarsffg/templates/items";
+    const path = "systems/genesys/templates/items";
     return `${path}/ffg-${this.item.type}-sheet.html`;
   }
 
@@ -61,7 +61,7 @@ export class ItemSheetFFG extends ItemSheet {
     }
 
     data.isTemp = false;
-    if (this.object.data?.flags?.starwarsffg?.ffgIsOwned || this.object.data?.flags?.starwarsffg?.ffgIsTemp) {
+    if (this.object.data?.flags?.genesys?.ffgIsOwned || this.object.data?.flags?.genesys?.ffgIsTemp) {
       data.isTemp = true;
     }
 
@@ -112,9 +112,9 @@ export class ItemSheetFFG extends ItemSheet {
           data.data.isReadOnly = true;
         }
 
-        if (!this.item.data.flags?.starwarsffg?.loaded) {
+        if (!this.item.data.flags?.genesys?.loaded) {
           CONFIG.logger.debug(`Running Item initial load`);
-          this.item.data.flags.starwarsffg.loaded = true;
+          this.item.data.flags.genesys.loaded = true;
 
           const specializationTalents = data.data.talents;
 
@@ -454,8 +454,8 @@ export class ItemSheetFFG extends ItemSheet {
             },
           },
           {
-            classes: ["dialog", "starwarsffg"],
-            template: `systems/starwarsffg/templates/items/dialogs/ffg-edit-${itemType}.html`,
+            classes: ["dialog", "genesys"],
+            template: `systems/genesys/templates/items/dialogs/ffg-edit-${itemType}.html`,
           }
         ).render(true);
       }
@@ -483,7 +483,7 @@ export class ItemSheetFFG extends ItemSheet {
       let temp = {
         ...item,
         flags: {
-          starwarsffg: {
+          genesys: {
             ffgTempId: this.object.id,
             ffgTempItemType: itemType,
             ffgTempItemIndex: itemIndex,
@@ -499,7 +499,7 @@ export class ItemSheetFFG extends ItemSheet {
         temp = {
           ...item,
           flags: {
-            starwarsffg: {
+            genesys: {
               ffgTempId: this.object.id,
               ffgTempItemType: itemType,
               ffgTempItemIndex: itemIndex,
@@ -530,15 +530,15 @@ export class ItemSheetFFG extends ItemSheet {
       const item = this.object.data.data[itemType][itemIndex];
       item.data.active = !item.data.active;
 
-      if (this.object.data.flags.starwarsffg.ffgTempId) {
+      if (this.object.data.flags.genesys.ffgTempId) {
         // this is a temporary sheet for an embedded item
 
         item.flags = {
-          starwarsffg: {
+          genesys: {
             ffgTempId: this.object.id,
             ffgTempItemType: itemType,
             ffgTempItemIndex: itemIndex,
-            ffgParent: this.object.data.flags.starwarsffg,
+            ffgParent: this.object.data.flags.genesys,
             ffgIsTemp: true
           }
         };
@@ -564,11 +564,11 @@ export class ItemSheetFFG extends ItemSheet {
         name: "Item Mod",
         type: itemType,
         flags: {
-          starwarsffg: {
+          genesys: {
             ffgTempId: this.object.id,
             ffgTempItemType: itemType,
             ffgTempItemIndex: -1,
-            ffgParent: this.object.data.flags.starwarsffg,
+            ffgParent: this.object.data.flags.genesys,
             ffgIsTemp: true,
             ffgUuid: this.object.uuid,
             ffgParentApp: this.appId,
@@ -592,7 +592,7 @@ export class ItemSheetFFG extends ItemSheet {
       setProperty(data, `data.${itemType}`, this.object.data.data[itemType]);
       await this.object.update(data);
 
-      await tempItem.setFlag("starwarsffg", "ffgTempItemIndex", this.object.data.data[itemType].findIndex((i) => i.id === tempItem.data._id));
+      await tempItem.setFlag("genesys", "ffgTempItemIndex", this.object.data.data[itemType].findIndex((i) => i.id === tempItem.data._id));
 
       tempItem.sheet.render(true);
     });
@@ -887,7 +887,7 @@ export class ItemSheetFFG extends ItemSheet {
       }
 
       const foundItem = items.find((i) => {
-        return i.name === itemObject.name || (i.flags?.starwarsffg?.ffgimportid?.length ? i.flags.starwarsffg.ffgimportid === itemObject.flags.starwarsffg.ffgimportid : false);
+        return i.name === itemObject.name || (i.flags?.genesys?.ffgimportid?.length ? i.flags.genesys.ffgimportid === itemObject.flags.genesys.ffgimportid : false);
       });
 
       switch (itemObject.type) {

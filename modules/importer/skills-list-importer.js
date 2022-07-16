@@ -6,10 +6,10 @@ export default class SkillListImporter extends FormApplication {
   static get defaultOptions() {
     return mergeObject(super.defaultOptions, {
       id: "swffg-skilllist-importer",
-      classes: ["starwarsffg", "data-import"],
+      classes: ["genesys", "data-import"],
       title: "Skill List Importer",
       width: 385,
-      template: "systems/starwarsffg/templates/importer/skill-list-importer.html",
+      template: "systems/genesys/templates/importer/skill-list-importer.html",
     });
   }
 
@@ -29,7 +29,7 @@ export default class SkillListImporter extends FormApplication {
       CONFIG.temporary = {};
     }
 
-    const currentSkillTheme = await game.settings.get("starwarsffg", "skilltheme");
+    const currentSkillTheme = await game.settings.get("genesys", "skilltheme");
 
     const themes = CONFIG.FFG.alternateskilllists.map((list) => {
       return {
@@ -53,8 +53,8 @@ export default class SkillListImporter extends FormApplication {
       event.preventDefault();
       event.stopPropagation();
 
-      game.settings.set("starwarsffg", "arraySkillList", defaultSkillArrayString);
-      game.settings.set("starwarsffg", "skilltheme", "starwars");
+      game.settings.set("genesys", "arraySkillList", defaultSkillArrayString);
+      game.settings.set("genesys", "skilltheme", "starwars");
 
       debounce(() => window.location.reload(), 100);
 
@@ -67,7 +67,7 @@ export default class SkillListImporter extends FormApplication {
 
       const target = event.currentTarget;
       const skilltheme = target.dataset.id;
-      const currentSkillList = await JSON.parse(game.settings.get("starwarsffg", "arraySkillList"));
+      const currentSkillList = await JSON.parse(game.settings.get("genesys", "arraySkillList"));
 
       const data = currentSkillList.find((i) => i.id === skilltheme);
 
@@ -84,7 +84,7 @@ export default class SkillListImporter extends FormApplication {
       if (!form.data.files.length) return ui.notifications.error("You did not upload a data file!");
       const text = await readTextFromFile(form.data.files[0]);
 
-      let currentSkillList = await JSON.parse(game.settings.get("starwarsffg", "arraySkillList"));
+      let currentSkillList = await JSON.parse(game.settings.get("genesys", "arraySkillList"));
 
       const newSkillList = JSON.parse(text);
 
@@ -103,7 +103,7 @@ export default class SkillListImporter extends FormApplication {
       }
 
       const newMasterSkillListData = JSON.stringify(currentSkillList);
-      await game.settings.set("starwarsffg", "arraySkillList", newMasterSkillListData);
+      await game.settings.set("genesys", "arraySkillList", newMasterSkillListData);
       debounce(() => window.location.reload(), 100);
 
       this.close();

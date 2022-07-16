@@ -16,8 +16,8 @@ export default class RollBuilderFFG extends FormApplication {
   static get defaultOptions() {
     return mergeObject(super.defaultOptions, {
       id: "roll-builder",
-      classes: ["starwarsffg", "roll-builder-dialog"],
-      template: "systems/starwarsffg/templates/dice/roll-options-ffg.html",
+      classes: ["genesys", "roll-builder-dialog"],
+      template: "systems/genesys/templates/dice/roll-options-ffg.html",
     });
   }
 
@@ -31,14 +31,14 @@ export default class RollBuilderFFG extends FormApplication {
     //get all possible sounds
     let sounds = [];
 
-    let canUserAddAudio = await game.settings.get("starwarsffg", "allowUsersAddRollAudio");
+    let canUserAddAudio = await game.settings.get("genesys", "allowUsersAddRollAudio");
     let canUserAddFlavor = game.user.isGM || !this?.roll?.flavor;
 
     if (game.user.isGM) {
       game.playlists.contents.forEach((playlist) => {
         playlist.sounds.forEach((sound) => {
           let selected = false;
-          const s = this.roll?.sound ?? this.roll?.item?.flags?.starwarsffg?.ffgsound;
+          const s = this.roll?.sound ?? this.roll?.item?.flags?.genesys?.ffgsound;
           if (s === sound.path) {
             selected = true;
           }
@@ -46,13 +46,13 @@ export default class RollBuilderFFG extends FormApplication {
         });
       });
     } else if (canUserAddAudio) {
-      const playlistId = await game.settings.get("starwarsffg", "allowUsersAddRollAudioPlaylist");
+      const playlistId = await game.settings.get("genesys", "allowUsersAddRollAudioPlaylist");
       const playlist = await game.playlists.get(playlistId);
 
       if (playlist) {
         playlist.sounds.forEach((sound) => {
           let selected = false;
-          const s = this.roll?.sound ?? this.roll?.item?.flags?.starwarsffg?.ffgsound;
+          const s = this.roll?.sound ?? this.roll?.item?.flags?.genesys?.ffgsound;
           if (s === sound.path) {
             selected = true;
           }
@@ -73,10 +73,10 @@ export default class RollBuilderFFG extends FormApplication {
       });
     }
 
-    const enableForceDie = game.settings.get("starwarsffg", "enableForceDie");
+    const enableForceDie = game.settings.get("genesys", "enableForceDie");
     const labels = {
-      light: game.settings.get("starwarsffg", "destiny-pool-light"),
-      dark: game.settings.get("starwarsffg", "destiny-pool-dark"),
+      light: game.settings.get("genesys", "destiny-pool-light"),
+      dark: game.settings.get("genesys", "destiny-pool-dark"),
     };
 
     return {
@@ -106,13 +106,13 @@ export default class RollBuilderFFG extends FormApplication {
           if (this?.roll?.item) {
             let entity;
             let entityData;
-            if (!this?.roll?.item?.flags?.starwarsffg?.uuid) {
+            if (!this?.roll?.item?.flags?.genesys?.uuid) {
               entity = CONFIG["Actor"].documentClass.collection.get(this.roll.data.actor.id);
               entityData = {
                 _id: this.roll.item.id,
               };
             } else {
-              const parts = this.roll.item.flags.starwarsffg?.uuid.split(".");
+              const parts = this.roll.item.flags.genesys?.uuid.split(".");
               const [entityName, entityId, embeddedName, embeddedId] = parts;
               entity = CONFIG[entityName].documentClass.collection.get(entityId);
               if (parts.length === 4) {
@@ -121,7 +121,7 @@ export default class RollBuilderFFG extends FormApplication {
                 };
               }
             }
-            setProperty(entityData, "flags.starwarsffg.ffgsound", sound);
+            setProperty(entityData, "flags.genesys.ffgsound", sound);
             entity.updateOwnedItem(entityData);
           }
         }
@@ -149,7 +149,7 @@ export default class RollBuilderFFG extends FormApplication {
           user: game.user.id,
           content: messageText,
           flags: {
-            starwarsffg: {
+            genesys: {
               roll: this.roll,
               dicePool: this.dicePool,
               description: this.description,

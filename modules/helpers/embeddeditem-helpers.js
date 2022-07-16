@@ -3,7 +3,7 @@ import JournalEntryFFG from "../items/journalentry-ffg.js";
 
 export default class EmbeddedItemHelpers {
   static async updateRealObject(item, data) {
-    let flags = item.data.flags.starwarsffg;
+    let flags = item.data.flags.genesys;
     let realItem = await game.items.get(flags.ffgTempId);
     let parents = [];
     let owner;
@@ -70,11 +70,11 @@ export default class EmbeddedItemHelpers {
       data.data = mergedData;
       const itemData = mergeObject(item.data, data);
 
-      if (item.data.flags.starwarsffg.ffgTempItemIndex > -1) {
-        dataPointer.data[item.data.flags.starwarsffg.ffgTempItemType][item.data.flags.starwarsffg.ffgTempItemIndex] = { ...itemData, flags: {} };
+      if (item.data.flags.genesys.ffgTempItemIndex > -1) {
+        dataPointer.data[item.data.flags.genesys.ffgTempItemType][item.data.flags.genesys.ffgTempItemIndex] = { ...itemData, flags: {} };
       } else {
-        await item.setFlag("starwarsffg", "ffgTempItemIndex", dataPointer.data[item.data.flags.starwarsffg.ffgTempItemType].length);
-        dataPointer.data[item.data.flags.starwarsffg.ffgTempItemType].push({ ...itemData, flags: {} });
+        await item.setFlag("genesys", "ffgTempItemIndex", dataPointer.data[item.data.flags.genesys.ffgTempItemType].length);
+        dataPointer.data[item.data.flags.genesys.ffgTempItemType].push({ ...itemData, flags: {} });
       }
 
       let formData = {};
@@ -196,7 +196,7 @@ export default class EmbeddedItemHelpers {
     const temp = {
       ...item,
       flags: {
-        starwarsffg: {
+        genesys: {
           ffgTempId: itemId,
           ffgTempItemType: modifierType,
           ffgTempItemIndex: modifierIndex,
@@ -208,7 +208,7 @@ export default class EmbeddedItemHelpers {
 
     let tempItem = await Item.create(temp, { temporary: true });
     tempItem.data._id = temp.id;
-    await tempItem.setFlag("starwarsffg", "readonly", true);
+    await tempItem.setFlag("genesys", "readonly", true);
     if (!temp.id) {
       tempItem.data._id = randomID();
     }
@@ -221,7 +221,7 @@ export default class EmbeddedItemHelpers {
       name: "",
       type,
       flags: {
-        starwarsffg: {
+        genesys: {
           ffgTempItemType: type,
           ffgTempItemIndex: -1,
           ...flags,

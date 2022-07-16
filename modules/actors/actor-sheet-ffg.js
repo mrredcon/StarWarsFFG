@@ -28,8 +28,8 @@ export class ActorSheetFFG extends ActorSheet {
   /** @override */
   static get defaultOptions() {
     return mergeObject(super.defaultOptions, {
-      classes: ["starwarsffg", "sheet", "actor"],
-      template: "systems/starwarsffg/templates/actors/ffg-character-sheet.html",
+      classes: ["genesys", "sheet", "actor"],
+      template: "systems/genesys/templates/actors/ffg-character-sheet.html",
       width: 710,
       height: 650,
       tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "characteristics" }],
@@ -39,7 +39,7 @@ export class ActorSheetFFG extends ActorSheet {
 
   /** @override */
   get template() {
-    const path = "systems/starwarsffg/templates/actors";
+    const path = "systems/genesys/templates/actors";
     return `${path}/ffg-${this.actor.data.type}-sheet.html`;
   }
 
@@ -72,14 +72,14 @@ export class ActorSheetFFG extends ActorSheet {
     let autoSoakCalculation = true;
 
     if (typeof this.actor.data?.flags?.config?.enableAutoSoakCalculation === "undefined") {
-      autoSoakCalculation = game.settings.get("starwarsffg", "enableSoakCalc");
+      autoSoakCalculation = game.settings.get("genesys", "enableSoakCalc");
     } else {
-      autoSoakCalculation = this.actor.data?.flags?.starwarsffg?.config?.enableAutoSoakCalculation;
+      autoSoakCalculation = this.actor.data?.flags?.genesys?.config?.enableAutoSoakCalculation;
     }
 
     data.settings = {
       enableSoakCalculation: autoSoakCalculation,
-      enableCriticalInjuries: this.actor.data?.flags?.starwarsffg?.config?.enableCriticalInjuries,
+      enableCriticalInjuries: this.actor.data?.flags?.genesys?.config?.enableCriticalInjuries,
     };
 
     // Establish sheet width and height using either saved persistent values or default values defined in swffg-config.js
@@ -92,7 +92,7 @@ export class ActorSheetFFG extends ActorSheet {
           this.position.height = 165;
         }
         // we need to update all specialization talents with the latest talent information
-        if (!this.actor.data.flags.starwarsffg?.loaded) {
+        if (!this.actor.data.flags.genesys?.loaded) {
           this._updateSpecialization(data);
         }
 
@@ -294,7 +294,7 @@ export class ActorSheetFFG extends ActorSheet {
         name: game.i18n.localize("SWFFG.MedicalItemName"),
         hint: game.i18n.localize("SWFFG.MedicalItemNameHint"),
         type: "String",
-        default: game.settings.get("starwarsffg", "medItemName"),
+        default: game.settings.get("genesys", "medItemName"),
       });
       this.sheetoptions.register("enableObligation", {
         name: game.i18n.localize("SWFFG.EnableObligation"),
@@ -393,7 +393,7 @@ export class ActorSheetFFG extends ActorSheet {
     });
 
     html.find(".resetMedical").click(async (ev) => {
-      if (game.settings.get("starwarsffg", "HealingItemAction") === '0') {
+      if (game.settings.get("genesys", "HealingItemAction") === '0') {
           // prompt
           // show a prompt asking what the user wants to do
           new Dialog(
@@ -425,17 +425,17 @@ export class ActorSheetFFG extends ActorSheet {
                   },
               },
               {
-                  classes: ["dialog", "starwarsffg"],
+                  classes: ["dialog", "genesys"],
               }
           ).render(true);
-      } else if (game.settings.get("starwarsffg", "HealingItemAction") === '1') {
+      } else if (game.settings.get("genesys", "HealingItemAction") === '1') {
         // rest
         let updateData = {};
         setProperty(updateData, `data.stats.medical.uses`, 0);
         setProperty(updateData, `data.stats.strain.value`, 0);
         setProperty(updateData, `data.stats.wounds.value`, Math.max(0, this.object.data.data.stats.wounds.value - 1));
         this.object.update(updateData);
-      } else if (game.settings.get("starwarsffg", "HealingItemAction") === '2') {
+      } else if (game.settings.get("genesys", "HealingItemAction") === '2') {
         // reset
         let updateData = {};
         setProperty(updateData, `data.stats.medical.uses`, 0);
@@ -594,8 +594,8 @@ export class ActorSheetFFG extends ActorSheet {
           },
         },
         {
-          classes: ["dialog", "starwarsffg"],
-          template: "systems/starwarsffg/templates/actors/dialogs/ffg-talent-selector.html",
+          classes: ["dialog", "genesys"],
+          template: "systems/genesys/templates/actors/dialogs/ffg-talent-selector.html",
         }
       ).render(true);
     });
@@ -818,7 +818,7 @@ export class ActorSheetFFG extends ActorSheet {
     }
 
     const itemDetails = item?.getItemDetails();
-    const template = "systems/starwarsffg/templates/chat/item-card.html";
+    const template = "systems/genesys/templates/chat/item-card.html";
     const html = await renderTemplate(template, { itemDetails, item });
 
     const messageData = {
@@ -848,7 +848,7 @@ export class ActorSheetFFG extends ActorSheet {
     }
 
     const itemDetails = { "desc": desc, "name": name };
-    const template = "systems/starwarsffg/templates/chat/force-power-card.html";
+    const template = "systems/genesys/templates/chat/force-power-card.html";
     const html = await renderTemplate(template, { itemDetails, item });
 
     const messageData = {
@@ -906,8 +906,8 @@ export class ActorSheetFFG extends ActorSheet {
         },
       },
       {
-        classes: ["dialog", "starwarsffg"],
-        template: "systems/starwarsffg/templates/actors/dialogs/ffg-skill-characteristic-selector.html",
+        classes: ["dialog", "genesys"],
+        template: "systems/genesys/templates/actors/dialogs/ffg-skill-characteristic-selector.html",
       }
     ).render(true);
   }
@@ -961,8 +961,8 @@ export class ActorSheetFFG extends ActorSheet {
         },
       },
       {
-        classes: ["dialog", "starwarsffg"],
-        template: "systems/starwarsffg/templates/actors/dialogs/ffg-skill-new.html",
+        classes: ["dialog", "genesys"],
+        template: "systems/genesys/templates/actors/dialogs/ffg-skill-new.html",
       }
     ).render(true);
   }
@@ -1114,10 +1114,10 @@ export class ActorSheetFFG extends ActorSheet {
    */
   async _updateSpecialization(data) {
     CONFIG.logger.debug(`Running Actor initial load`);
-    if (this.actor.data.flags.starwarsffg === undefined) {
-        this.actor.data.flags.starwarsffg = {};
+    if (this.actor.data.flags.genesys === undefined) {
+        this.actor.data.flags.genesys = {};
     }
-    this.actor.data.flags.starwarsffg.loaded = true;
+    this.actor.data.flags.genesys.loaded = true;
 
     const specializations = this.actor.data.items.filter((item) => {
       return item.type === "specialization";
@@ -1243,7 +1243,7 @@ export class ActorSheetFFG extends ActorSheet {
         if (a.toLowerCase() < b.toLowerCase()) return -1;
         return 0;
       };
-      if (game.settings.get("starwarsffg", "skillSorting")) {
+      if (game.settings.get("genesys", "skillSorting")) {
         sortFunction = (a, b) => {
           if (data.data.skills[a].label > data.data.skills[b].label) return 1;
           if (data.data.skills[a].label < data.data.skills[b].label) return -1;

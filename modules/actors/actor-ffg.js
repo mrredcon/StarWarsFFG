@@ -77,7 +77,7 @@ export class ActorFFG extends Actor {
     if (actorData.type === "minion" || actorData.type === "character") {
       this._applyModifiers.bind(this);
       this._applyModifiers(actorData);
-      if (game.settings.get("starwarsffg", "enableSoakCalc")) {
+      if (game.settings.get("genesys", "enableSoakCalc")) {
         this._calculateDerivedValues(actorData);
       }
     } else if (actorData.type === "vehicle") {
@@ -282,7 +282,7 @@ export class ActorFFG extends Actor {
     }
 
     // enable talent sorting if global to true and sheet is set to inherit or sheet is set to true.
-    if ((game.settings.get("starwarsffg", "talentSorting") && (!actorData.flags?.config?.talentSorting || actorData.flags?.config?.talentSorting === "0")) || actorData.flags?.config?.talentSorting === "1") {
+    if ((game.settings.get("genesys", "talentSorting") && (!actorData.flags?.config?.talentSorting || actorData.flags?.config?.talentSorting === "0")) || actorData.flags?.config?.talentSorting === "1") {
       data.talentList = globalTalentList.slice().sort(this._sortTalents);
     } else {
       data.talentList = globalTalentList;
@@ -446,7 +446,7 @@ export class ActorFFG extends Actor {
           value = [data[name][k].fore, data[name][k].port, data[name][k].starboard, data[name][k].aft];
         } else if (key === "Soak") {
           try {
-            if ((typeof actorData.data.flags?.config?.enableAutoSoakCalculation === undefined && game.settings.get("starwarsffg", "enableSoakCalc")) || actorData.data.flags?.config?.enableAutoSoakCalculation) {
+            if ((typeof actorData.data.flags?.config?.enableAutoSoakCalculation === undefined && game.settings.get("genesys", "enableSoakCalc")) || actorData.data.flags?.config?.enableAutoSoakCalculation) {
               value = 0;
             }
           } catch (err) {

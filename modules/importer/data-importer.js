@@ -10,9 +10,9 @@ export default class DataImporter extends FormApplication {
   static get defaultOptions() {
     return mergeObject(super.defaultOptions, {
       id: "data-importer",
-      classes: ["starwarsffg", "data-import"],
+      classes: ["genesys", "data-import"],
       title: "Data Importer",
-      template: "systems/starwarsffg/templates/importer/data-importer.html",
+      template: "systems/genesys/templates/importer/data-importer.html",
     });
   }
 

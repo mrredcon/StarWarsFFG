@@ -116,20 +116,20 @@ Hooks.once("init", async function () {
   };
 
   // Load character templates so that dynamic skills lists work correctly
-  loadTemplates(["systems/starwarsffg/templates/actors/ffg-character-sheet.html", "systems/starwarsffg/templates/actors/ffg-minion-sheet.html"]);
+  loadTemplates(["systems/genesys/templates/actors/ffg-character-sheet.html", "systems/genesys/templates/actors/ffg-minion-sheet.html"]);
 
   SettingsHelpers.initLevelSettings();
 
-  const uitheme = game.settings.get("starwarsffg", "ui-uitheme");
+  const uitheme = game.settings.get("genesys", "ui-uitheme");
 
   switch (uitheme) {
     case "mandar": {
-      $('link[href="systems/starwarsffg/styles/starwarsffg.css"]').prop("disabled", true);
-      $("head").append('<link href="systems/starwarsffg/styles/mandar.css" rel="stylesheet" type="text/css" media="all">');
+      $('link[href="systems/genesys/styles/genesys.css"]').prop("disabled", true);
+      $("head").append('<link href="systems/genesys/styles/mandar.css" rel="stylesheet" type="text/css" media="all">');
       break;
     }
     default: {
-      $('link[href="systems/starwarsffg/styles/starwarsffg.css"]').prop("disabled", false);
+      $('link[href="systems/genesys/styles/genesys.css"]').prop("disabled", false);
     }
   }
 
@@ -138,7 +138,7 @@ Hooks.once("init", async function () {
    * @type {String}
    */
   // Register initiative rule
-  game.settings.register("starwarsffg", "initiativeRule", {
+  game.settings.register("genesys", "initiativeRule", {
     name: game.i18n.localize("SWFFG.InitiativeMode"),
     hint: game.i18n.localize("SWFFG.InitiativeModeHint"),
     scope: "world",
@@ -151,7 +151,7 @@ Hooks.once("init", async function () {
     },
     onChange: (rule) => _setffgInitiative(rule),
   });
-  _setffgInitiative(game.settings.get("starwarsffg", "initiativeRule"));
+  _setffgInitiative(game.settings.get("genesys", "initiativeRule"));
 
   function _setffgInitiative(initMethod) {
     let formula;
@@ -177,7 +177,7 @@ Hooks.once("init", async function () {
   }
 
   async function gameSkillsList() {
-    game.settings.registerMenu("starwarsffg", "addskilltheme", {
+    game.settings.registerMenu("genesys", "addskilltheme", {
       name: game.i18n.localize("SWFFG.SettingsSkillListImporter"),
       label: game.i18n.localize("SWFFG.SettingsSkillListImporterLabel"),
       hint: game.i18n.localize("SWFFG.SettingsSkillListImporterHint"),
@@ -186,7 +186,7 @@ Hooks.once("init", async function () {
       restricted: true,
     });
 
-    game.settings.register("starwarsffg", "addskilltheme", {
+    game.settings.register("genesys", "addskilltheme", {
       name: "Item Importer",
       scope: "world",
       default: {},
@@ -194,7 +194,7 @@ Hooks.once("init", async function () {
       type: Object,
     });
 
-    game.settings.register("starwarsffg", "arraySkillList", {
+    game.settings.register("genesys", "arraySkillList", {
       name: "Skill List",
       scope: "world",
       default: defaultSkillArrayString,
@@ -202,7 +202,7 @@ Hooks.once("init", async function () {
       type: String,
     });
 
-    let skillList = JSON.parse(game.settings.get("starwarsffg", "arraySkillList"));
+    let skillList = JSON.parse(game.settings.get("genesys", "arraySkillList"));
     try {
       CONFIG.FFG.alternateskilllists = skillList;
 
@@ -212,7 +212,7 @@ Hooks.once("init", async function () {
         skillChoices[list.id] = list.id;
       });
 
-      game.settings.register("starwarsffg", "skilltheme", {
+      game.settings.register("genesys", "skilltheme", {
         name: game.i18n.localize("SWFFG.SettingsSkillTheme"),
         hint: game.i18n.localize("SWFFG.SettingsSkillThemeHint"),
         scope: "world",
@@ -223,8 +223,8 @@ Hooks.once("init", async function () {
         choices: skillChoices,
       });
 
-      if (game.settings.get("starwarsffg", "skilltheme") !== "starwars") {
-        const altSkills = JSON.parse(JSON.stringify(CONFIG.FFG.alternateskilllists.find((list) => list.id === game.settings.get("starwarsffg", "skilltheme")).skills));
+      if (game.settings.get("genesys", "skilltheme") !== "starwars") {
+        const altSkills = JSON.parse(JSON.stringify(CONFIG.FFG.alternateskilllists.find((list) => list.id === game.settings.get("genesys", "skilltheme")).skills));
 
         let skills = {};
         Object.keys(altSkills).forEach((skillKey) => {
@@ -254,7 +254,7 @@ Hooks.once("init", async function () {
     Hooks.on("createActor", (actor) => {
       if (actor.type !== "vehicle" && actor.type !== "homestead") {
         if (CONFIG.FFG?.alternateskilllists?.length) {
-          let skilllist = game.settings.get("starwarsffg", "skilltheme");
+          let skilllist = game.settings.get("genesys", "skilltheme");
           try {
             let skills = JSON.parse(JSON.stringify(CONFIG.FFG.alternateskilllists.find((list) => list.id === skilllist)));
             CONFIG.logger.log(`Applying skill theme ${skilllist} to actor`);
@@ -462,7 +462,7 @@ Hooks.on("renderChatMessage", (app, html, messageData) => {
   content[0].innerHTML = PopoutEditor.renderDiceImages(content[0].innerHTML);
 
   html.on("click", ".ffg-pool-to-player", () => {
-    const poolData = messageData.message.flags.starwarsffg;
+    const poolData = messageData.message.flags.genesys;
 
     const dicePool = new DicePoolFFG(poolData.dicePool);
 
@@ -493,7 +493,7 @@ Hooks.on("renderChatMessage", (app, html, messageData) => {
 Hooks.once("ready", async () => {
   SettingsHelpers.readyLevelSetting();
 
-  const currentVersion = game.settings.get("starwarsffg", "systemMigrationVersion");
+  const currentVersion = game.settings.get("genesys", "systemMigrationVersion");
 
   const version = game.system.data.version;
   const isAlpha = game.system.data.version.includes("alpha");
@@ -519,7 +519,7 @@ Hooks.once("ready", async () => {
         }
 
         // migrate all character to using current skill list if not default.
-        let skilllist = game.settings.get("starwarsffg", "skilltheme");
+        let skilllist = game.settings.get("genesys", "skilltheme");
 
         if (CONFIG.FFG?.alternateskilllists?.length) {
           try {
@@ -558,18 +558,18 @@ Hooks.once("ready", async () => {
         if (data.files.includes(`worlds/${game.world.id}/skills.json`)) {
           // if the skills.json file is found AND the skillsList in setting is the default skill list then read the data from the file.
           // This will make sure that the data from the JSON file overwrites the data in the setting.
-          if ((await game.settings.get("starwarsffg", "arraySkillList")) === defaultSkillArrayString) {
+          if ((await game.settings.get("genesys", "arraySkillList")) === defaultSkillArrayString) {
             const fileData = await fetch(`/worlds/${game.world.id}/skills.json`).then((response) => response.json());
-            await game.settings.set("starwarsffg", "arraySkillList", JSON.stringify(fileData));
+            await game.settings.set("genesys", "arraySkillList", JSON.stringify(fileData));
             skillList = fileData;
           }
         } else {
-          skillList = JSON.parse(game.settings.get("starwarsffg", "arraySkillList"));
+          skillList = JSON.parse(game.settings.get("genesys", "arraySkillList"));
         }
 
         CONFIG.FFG.alternateskilllists = skillList;
-        if (game.settings.get("starwarsffg", "skilltheme") !== "starwars") {
-          const altSkills = JSON.parse(JSON.stringify(CONFIG.FFG.alternateskilllists.find((list) => list.id === game.settings.get("starwarsffg", "skilltheme")).skills));
+        if (game.settings.get("genesys", "skilltheme") !== "starwars") {
+          const altSkills = JSON.parse(JSON.stringify(CONFIG.FFG.alternateskilllists.find((list) => list.id === game.settings.get("genesys", "skilltheme")).skills));
 
           let skills = {};
           Object.keys(altSkills).forEach((skillKey) => {
@@ -617,13 +617,13 @@ Hooks.once("ready", async () => {
         CONFIG.logger.error(`Error during system migration`, err);
       }
     }
-    game.settings.set("starwarsffg", "systemMigrationVersion", version);
+    game.settings.set("genesys", "systemMigrationVersion", version);
   }
 
   // enable functional testing
   if (game.user.isGM && window.location.href.includes("localhost") && game?.data?.system?.data?.test) {
     const command = `
-      const testing = import('/systems/starwarsffg/tests/ffg-tests.js').then((mod) => {
+      const testing = import('/systems/genesys/tests/ffg-tests.js').then((mod) => {
       const tester = new mod.default();
       tester.render(true);
     });
@@ -649,7 +649,7 @@ Hooks.once("ready", async () => {
   });
 
   // Display Destiny Pool
-  let destinyPool = { light: game.settings.get("starwarsffg", "dPoolLight"), dark: game.settings.get("starwarsffg", "dPoolDark") };
+  let destinyPool = { light: game.settings.get("genesys", "dPoolLight"), dark: game.settings.get("genesys", "dPoolDark") };
 
   // future functionality to allow multiple menu items to be passed to destiny pool
   const defaultDestinyMenu = [
@@ -687,7 +687,7 @@ Hooks.once("ready", async () => {
 });
 
 Hooks.once("diceSoNiceReady", (dice3d) => {
-  let dicetheme = game.settings.get("starwarsffg", "dicetheme");
+  let dicetheme = game.settings.get("genesys", "dicetheme");
   if (!dicetheme || dicetheme == "starwars") {
     dice3d.addSystem({ id: "swffg", name: "Star Wars FFG" }, true);
 
@@ -910,7 +910,7 @@ Hooks.once("diceSoNiceReady", (dice3d) => {
 
 Hooks.on("pauseGame", () => {
   if (game.data.paused) {
-    const pausedImage = game.settings.get("starwarsffg", "ui-pausedImage");
+    const pausedImage = game.settings.get("genesys", "ui-pausedImage");
     if (pausedImage) {
       $("#pause img").css("content", `url(${pausedImage})`);
     }

@@ -92,9 +92,9 @@ export class RollFFG extends Roll {
     }
   }
 
-  static CHAT_TEMPLATE = "systems/starwarsffg/templates/dice/roll-ffg.html";
+  static CHAT_TEMPLATE = "systems/genesys/templates/dice/roll-ffg.html";
 
-  static TOOLTIP_TEMPLATE = "systems/starwarsffg/templates/dice/tooltip-ffg.html";
+  static TOOLTIP_TEMPLATE = "systems/genesys/templates/dice/tooltip-ffg.html";
 
   /* -------------------------------------------- */
 
@@ -231,8 +231,8 @@ export class RollFFG extends Roll {
 
     // Define chat data
     if (this?.data) {
-      if (this.data.flags?.starwarsffg?.ffgUuid) {
-        const item = await fromUuid(this.data.flags.starwarsffg.ffgUuid);
+      if (this.data.flags?.genesys?.ffgUuid) {
+        const item = await fromUuid(this.data.flags.genesys.ffgUuid);
         if (item?.data) {
           this.data = item.data;
         }
@@ -276,7 +276,7 @@ export class RollFFG extends Roll {
       // extended metadata is missing, lookup the actor ID so we can embed it for future lookups
       let candidate_actors = game.actors.filter(actor => actor.items.filter(item => item.id === chatData.data._id).length > 0);
       if (candidate_actors.length > 0) {
-        if (game.settings.get("starwarsffg", "oldWorldCompatability")) {
+        if (game.settings.get("genesys", "oldWorldCompatability")) {
           let test_item = game.actors.get(candidate_actors[0].id).items.get(chatData.data._id);
           // for whatever reason, sometimes the item we read doesn't have modifiers even though the chat item does
           // check if this is the case and correct it if it is
@@ -290,7 +290,7 @@ export class RollFFG extends Roll {
           }
         }
         // fake the UUID flag so we can do the lookup within chat messages
-        chatData.data.flags.starwarsffg.ffgUuid = 'Actor.' + candidate_actors[0].id + '.Item.' + chatData.data._id;
+        chatData.data.flags.genesys.ffgUuid = 'Actor.' + candidate_actors[0].id + '.Item.' + chatData.data._id;
       }
     }
 
