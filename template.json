@@ -752,26 +752,8 @@
     "specialization": {
       "templates": ["core"],
       "talents": {
-        "talent0": {},
-        "talent1": {},
-        "talent2": {},
-        "talent3": {},
-        "talent4": {},
-        "talent5": {},
-        "talent6": {},
-        "talent7": {},
-        "talent8": {},
-        "talent9": {},
-        "talent10": {},
-        "talent11": {},
-        "talent12": {},
-        "talent13": {},
-        "talent14": {},
-        "talent15": {},
-        "talent16": {},
-        "talent17": {},
-        "talent18": {},
-        "talent19": {}
+      	"talent0": {},
+      	"talent1": {}
       }
     },
     "career" : {

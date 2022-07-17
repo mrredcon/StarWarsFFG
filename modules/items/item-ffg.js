@@ -306,6 +306,15 @@ export class ItemFFG extends ItemBaseFFG {
   }
 
   _prepareTalentTrees(collection, itemType, listProperty, hasGlobalList) {
+	  let newtalents = [];
+	  for (let i = 0; i < 20; i++) {
+		  let talent = { name: "Talent"+i };
+		  newtalents.push(talent);
+	  }
+	  this.data.talents = newtalents;
+  }
+
+  _prepareTalentTreesOld(collection, itemType, listProperty, hasGlobalList) {
     const itemData = this.data;
     const talents = itemData.data[collection];
     let rowcount = 0;
