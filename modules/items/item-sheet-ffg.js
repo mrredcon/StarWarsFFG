@@ -553,6 +553,29 @@ export class ItemSheetFFG extends ItemSheet {
       this.object.sheet.render(true);
     });
 
+    html.find(".item-add").click((ev) => {
+      let itemType = "";
+      switch (ev.currentTarget.classList[1]) {
+        case "talent":
+	  let numOfTalents = Object.keys(this.item.data.data.talents).length;
+          this.item.data.data.talents["talent" + numOfTalents] = {
+		  islearned: false,
+		  name: "",
+		  description: "",
+		  activation: "",
+		  activationLabel: "",
+		  itemId: "",
+		  isRanked: false,
+		  pack: "",
+		  cost: "5",
+		  isForceTalent: false,
+		  'links-right': false,
+		  'links-top-1': false,
+	  };
+          break;
+      }
+    });
+
     html.find(".additional .add-new-item").on("click", async (event) => {
       event.preventDefault();
       event.stopPropagation();
